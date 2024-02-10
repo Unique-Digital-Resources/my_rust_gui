@@ -19,7 +19,7 @@ enum RedrawRequestReason {
 
 pub struct UWindow{
     pub window : WindowBuilder,
-    pub theme : Vec<Box<dyn UThmTrait>>,
+    theme : Vec<Box<dyn UThmTrait>>,
     children: Vec<UWidget>,
     children_screenoff_color: Vec<Color>,
     event_handler: Option<Box<dyn FnMut(Event<()>, &mut Self)>>,
@@ -51,6 +51,8 @@ impl UWindow{
         let mut surface = unsafe { Surface::new(&context, &w) }.unwrap();
         let mut last_pixel = Color::from_argb(0 , 0 , 0 , 0);
         let mut _current_pixel  = Color::from_argb(0 , 0 , 0 , 0);
+        let mut current_index: usize = 0;
+        let mut last_index: usize = 0;
         
         let (width, height) = {
             let size = w.inner_size();
@@ -92,7 +94,7 @@ impl UWindow{
                             match &self.children[i].wdgt {
                                 WidgetType::Button(button) =>{
                                 self.children[i].rect_position = ((width / 2) as f32, (height / 2) as f32);
-                                theme.draw_btn(visible_buffer.canvas(), screenoff_buffer.canvas(), &self.children_screenoff_color[i], self.children[i].rect_position.0, self.children[i].rect_position.1, 10.0, 10.0);
+                                theme.draw_btn(visible_buffer.canvas(), screenoff_buffer.canvas(), &self.children_screenoff_color[i], self.children[i].rect_position.0, self.children[i].rect_position.1, 300.0, 100.0);
                             }
                         }
                     }
@@ -129,17 +131,54 @@ impl UWindow{
                                     if let Some(theme) = self.theme.get_mut(0){
                                         match &self.children[cindex].wdgt {
                                             WidgetType::Button(button) => {
-                                                theme.draw_btn(visible_buffer.canvas(), screenoff_buffer.canvas(), &self.children_screenoff_color[cindex], self.children[cindex].rect_position.0, self.children[cindex].rect_position.1, 10.0, 10.0);
+                                                theme.draw_on_hover_btn(visible_buffer.canvas(), screenoff_buffer.canvas(), &self.children_screenoff_color[cindex], self.children[cindex].rect_position.0, self.children[cindex].rect_position.1, 300.0, 100.0);
                                                 // Run on_hover function
                                                 (button.on_hover)(&self.children[cindex]);
+
+                                                current_index = cindex;
+
+                                                let pixmap = visible_buffer.peek_pixels().unwrap().bytes().unwrap();
+                                                let mut buffer = surface.buffer_mut().unwrap();
+
+                                                for index in 0..(width * height) as usize {
+                                                    buffer[index] = pixmap[index * 4 + 2] as u32
+                                                        | (pixmap[index * 4 + 1] as u32) << 8
+                                                        | (pixmap[index * 4] as u32) << 16;
+                                                }
+                                                buffer.present().unwrap();
 
                                             }
                                             // Add other branches for different widget types if needed
                                         }
                                     }
-                            }                            
-                        };
-                    }
+                            } 
+
+                            else if !self.children_screenoff_color.contains(&_current_pixel) || current_index != last_index {
+                                if let Some(theme) = self.theme.get_mut(0){
+                                    match &self.children[last_index].wdgt {
+                                        WidgetType::Button(button) => {
+                                            theme.draw_btn(visible_buffer.canvas(), screenoff_buffer.canvas(), &self.children_screenoff_color[last_index], self.children[last_index].rect_position.0, self.children[last_index].rect_position.1, 300.0, 100.0);
+
+                                            let pixmap = visible_buffer.peek_pixels().unwrap().bytes().unwrap();
+                                            let mut buffer = surface.buffer_mut().unwrap();
+
+                                            for index in 0..(width * height) as usize {
+                                                buffer[index] = pixmap[index * 4 + 2] as u32
+                                                    | (pixmap[index * 4 + 1] as u32) << 8
+                                                    | (pixmap[index * 4] as u32) << 16;
+                                            }
+                                            buffer.present().unwrap();
+
+                                        }
+                                        // Add other branches for different widget types if needed
+                                    }
+                            }
+
+
+                        }
+                    };
+                    
+                }
             _ => {}
         }_ => {}
     
@@ -165,5 +204,9 @@ impl UWindow{
         // Add the unique color to UWindow.children_screenoff_color
         self.children_screenoff_color.push(new_color);
     }
-}
 
+    pub fn set_theme(&mut self, theme: Box<dyn UThmTrait>) {
+        self.theme.clear(); // Clear the existing themes
+        self.theme.push(theme); // Add the new theme
+    }
+}
