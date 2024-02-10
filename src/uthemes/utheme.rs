@@ -83,6 +83,7 @@ pub struct UTheme{
 pub trait UThmTrait{
     // fn new(&self)-> UTheme{}
     fn draw_btn(&mut self, visible_buffer: &Canvas, screenoff_buffer: &Canvas, screenoff_color: &Color, xpos: f32, ypos: f32, w: f32, h: f32 );
+    fn draw_on_hover_btn(&mut self, visible_buffer: &Canvas, screenoff_buffer: &Canvas, screenoff_color: &Color, xpos: f32, ypos: f32, w: f32, h: f32 );
 }
 
 // impl UThmTrait for UTheme {
