@@ -1,5 +1,5 @@
 use crate::uthemes::utheme::{UTheme, UThmTrait};
-use skia_safe::{wrapper::ValueWrapper, Canvas, Color, Font, FontStyle, Paint, PaintStyle, Typeface};
+use skia_safe::{wrapper::ValueWrapper, Canvas, Color, Font, FontStyle, Paint, PaintStyle, Typeface, Rect};
 
 pub struct ThmDefault {
     pub theme: UTheme,
@@ -55,12 +55,24 @@ impl ThmDefault{
 impl UThmTrait for ThmDefault{
     fn draw_btn(&mut self, visible_buffer: &Canvas, screenoff_buffer: &Canvas, screenoff_color: &Color, xpos: f32, ypos: f32, w: f32, h: f32 ) {
         let mut thmpaint = Paint::default();
-        thmpaint.set_color(Color::from_rgb(255, 0, 150));
+        let rect = Rect::new(xpos, ypos, xpos+w, ypos+h);
+        thmpaint.set_color(Color::from_rgb(255, 0, 0));
         thmpaint.set_style(PaintStyle::Fill);
         thmpaint.set_anti_alias(true);
-        visible_buffer.draw_circle((xpos, ypos), 100.0, &thmpaint);
+        visible_buffer.draw_round_rect(rect, 10.0, 10.0, &thmpaint);
         thmpaint.set_color(*screenoff_color);
         thmpaint.set_anti_alias(false);
-        screenoff_buffer.draw_circle((xpos, ypos), 100.0, &thmpaint);
+        screenoff_buffer.draw_round_rect(rect, 10.0, 10.0, &thmpaint);
+    }
+    fn draw_on_hover_btn(&mut self, visible_buffer: &Canvas, screenoff_buffer: &Canvas, screenoff_color: &Color, xpos: f32, ypos: f32, w: f32, h: f32 ) {
+        let mut thmpaint = Paint::default();
+        let rect = Rect::new(xpos, ypos, xpos+w, ypos+h);
+        thmpaint.set_color(Color::from_rgb(0, 255, 0));
+        thmpaint.set_style(PaintStyle::Fill);
+        thmpaint.set_anti_alias(true);
+        visible_buffer.draw_round_rect(rect, 10.0, 10.0, &thmpaint);
+        thmpaint.set_color(*screenoff_color);
+        thmpaint.set_anti_alias(false);
+        screenoff_buffer.draw_round_rect(rect, 10.0, 10.0, &thmpaint);
     }
 }
