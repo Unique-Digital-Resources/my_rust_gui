@@ -23,3 +23,7 @@ It should be noted that the tool is detected with the mouse cursor by the color 
 
 coming soon
 
+
+## See also
+
+[Learn graphics for theoretical gui with rust](https://github.com/Unique-Digital-Resources/Learn-graphics-for-theoretical-gui)
