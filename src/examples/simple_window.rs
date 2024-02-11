@@ -1,3 +1,13 @@
+// NOTES:
+//==============================================================================
+// written by Abdo Mahmoud (Unique-Digital-Resources): https://github.com/Unique-Digital-Resources
+// Copyright 2024 Abdo Mahmoud
+// Apache 2.0
+//==============================================================================
+// This script uses winit crate/library : https://github.com/rust-windowing/winit
+// Go to the links to find out the original authors of each library, the license and more examples if availabe.
+//==============================================================================
+
 extern crate my_gui_v0_0_1;
 use my_gui_v0_0_1::uwindow::UWindow;
 use my_gui_v0_0_1::uwidgets::uwidget::UWidget;
