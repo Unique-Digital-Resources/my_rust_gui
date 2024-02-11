@@ -1,3 +1,13 @@
+// NOTES:
+//==============================================================================
+// written by Abdo Mahmoud (Unique-Digital-Resources): https://github.com/Unique-Digital-Resources
+// Copyright 2024 Abdo Mahmoud
+// Apache 2.0
+//==============================================================================
+// This script uses skia_safe crate/library : https://github.com/rust-skia/rust-skia
+// Go to the links to find out the original authors of each library, the license and more examples if availabe.
+//==============================================================================
+
 use skia_safe::{Paint, Canvas, PaintStyle, Color, Typeface, Font, FontStyle};
 
 pub struct UTheme{
