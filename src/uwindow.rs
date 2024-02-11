@@ -1,3 +1,17 @@
+// NOTES:
+//==============================================================================
+// written by Abdo Mahmoud (Unique-Digital-Resources): https://github.com/Unique-Digital-Resources
+// Copyright 2024 Abdo Mahmoud
+// Apache 2.0
+//==============================================================================
+// This script uses crates/libraries:
+// skia_safe : https://github.com/rust-skia/rust-skia
+// rand : https://github.com/rust-random/rand
+// softbuffer : https://github.com/rust-windowing/softbuffer
+// winit : https://github.com/rust-windowing/winit
+// Go to the links to find out the original authors of each library, the license and more examples if availabe.
+//==============================================================================
+
 use crate::uwidgets::uwidget::UWidget;
 use crate::uwidgets::uwidgetype::WidgetType;
 use crate::uwidgets::button::Button;
