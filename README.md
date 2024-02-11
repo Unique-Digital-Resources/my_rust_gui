@@ -11,8 +11,12 @@ It is still in the early stages of development
 
 ## How it works?
 
-When a new window is created using `UWindow.new()`, `UWindow.run()` after the button widget has been added to `UWindow.children`, the event loop runs, and depending on the event, the functions associated with each specific `UWidgetTtype` are activated, for example: when the movement of the mouse cursor occurs and it is on Button element,`UWindow` activates the `Button.on_hover` function of the button.
+When a new window is created using `UWindow.new()`, `UWindow.run()` after the button widget has been added to `UWindow.children`, the event loop runs, and depending on the event, the functions associated with each specific `UWidgetTtype` are activated, for example: when the movement of the mouse cursor occurs and it is on Button element,`UWindow` activates the `Button.on_hover` function of the button,and current `UTheme` in `UWindow.theme` draw the button.
 It should be noted that the tool is detected with the mouse cursor by the color of the pixels in offscreen buffer that created in `UWindow`, instead of calculating the tool’s coordinates and size. This method is easier and more accurate.
+
+- `UWindow` is responsible for window management and event handling.
+- `Utheme` is responsible for drawing widgets apearance dependeng on the selected theme.
+- `Uwidget` is responsible for widget management.
 
 
 
